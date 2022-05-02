@@ -2,15 +2,18 @@ package chat.server;
 
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Atendemento extends Thread {
+public class Atendimento extends Thread {
     private Socket cliente;
     private Scanner input = null;
     private PrintStream output = null;
+    private ArrayList< Atendimento > threads;
 
-    public Atendemento(Socket cliente) {
+    public Atendimento(Socket cliente, ArrayList<Atendimento> threads) {
         this.cliente = cliente;
+        this.threads = threads;
     }
     
     @Override
@@ -24,7 +27,10 @@ public class Atendemento extends Thread {
             do { 
                 msg = input.nextLine(); 
                 System.out.println("Recebido: " + msg); 
-                output.println("> " + msg); // reenviar a msg do cliente que chegou no servidor
+
+                for (Atendimento atendimento : threads) { // reenviar a msg do cliente para cada cliente 
+                    atendimento.sendMessage(msg); 
+                }
                 
             } while (!msg.equalsIgnoreCase("exit")); 
             
@@ -37,5 +43,9 @@ public class Atendemento extends Thread {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void sendMessage(String msg) {
+        output.println("> " + msg); 
     }
 }

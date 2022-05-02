@@ -2,9 +2,11 @@ package chat.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 // aplicação Servidor
 public class Server { // cada vez que se roda abre um novo servidor
+    static ArrayList<Atendimento> threads = new ArrayList<>();
     public static void main(String[] args) {
         final int PORT = 12345;
         ServerSocket serverSocket;
@@ -26,7 +28,8 @@ public class Server { // cada vez que se roda abre um novo servidor
                 clientSocket = serverSocket.accept(); // para e fica esperando a conexão... RETORNA o client socket
 
                 System.out.println("Conectado com " + clientSocket.getInetAddress().getHostAddress());
-                Atendemento atendimento = new Atendemento(clientSocket);
+                Atendimento atendimento = new Atendimento(clientSocket, threads);
+                threads.add(atendimento);
                 atendimento.start();
             }
 
