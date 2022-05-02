@@ -35,6 +35,7 @@ public class Server { // cada vez que se roda abre um novo servidor
             System.out.println(e.getMessage());
         }
 
+        // O SERVIDOR FICA CONECTADO 
         // fase de encerramento da conexão
         try {
             serverSocket.close();

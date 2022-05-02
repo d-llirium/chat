@@ -24,6 +24,8 @@ public class Atendemento extends Thread {
                 
             } while (!msg.equalsIgnoreCase("exit")); 
             
+            System.out.println("Encerrada a conexão com " + cliente.getInetAddress().getHostAddress());
+
             input.close();
             cliente.close();
 
